@@ -93,4 +93,30 @@ class Railroad{
         }
         return true;
     }
+
+        bool unique(Station* head, int m_code){
+        Station* temp = head;
+        while(temp != nullptr){
+            if(temp->m_code == m_code){
+                return false;
+            }
+
+            temp = temp->m_next;
+        }
+        return true;
+    }
+
+    Station* position(Station* head, int m_code){
+            Station* temp = head;
+        while(temp != nullptr){
+            if(temp->m_code == m_code){
+                return temp;
+            }
+
+            temp = temp->m_next;
+        }
+        return nullptr;
+    }
+
+
 };

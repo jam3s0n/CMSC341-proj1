@@ -87,7 +87,25 @@ void Railroad::dump(){
 }
 
 bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
-    
+    if(unique(m_head, route.front().first)){
+        return false;
+    }else{
+
+        pair<int, DIRECTION> prev = {NULL, NONE};
+        for(pair x: route){
+            Station* cart = position(m_head, x.first);
+
+            
+            prev.second = x.second;
+
+            if(cart == nullptr){
+                extendAtTail(x.first, 0);
+            }
+            
+
+
+        }
+    }
 }
 
 int Railroad::travel(list< pair<int,DIRECTION> > route){
@@ -95,7 +113,13 @@ int Railroad::travel(list< pair<int,DIRECTION> > route){
 }
 
 bool Railroad::setNumPassengers(int code, int passengers){
-    
+    Station* cart = position(m_head, code);
+    if(cart){
+        cart->m_passengers = passengers;
+        return true;
+    }else{
+        return false;
+    }
 }
 
 bool Railroad::removeStation(int aCode){
