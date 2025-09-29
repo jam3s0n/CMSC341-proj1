@@ -87,7 +87,7 @@ void Railroad::dump(){
 }
 
 bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
-    if(unique(m_head, route.front().first)){
+    if(unique(m_head, route.front().first) || !possible(route)){
         return false;
     }else{
 
@@ -95,16 +95,27 @@ bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
         for(pair x: route){
             Station* cart = position(m_head, x.first);
 
-            
+            Station* prevCart = position(m_head, prev.first);
+            if(prev.second == NORTH){
+                prevCart->m_north == cart;
+            }else if(prev.second == SOUTH){
+                prevCart->m_south == cart;
+            }else if(prev.second == EAST){
+                prevCart->m_east == cart;
+            }else if(prev.second == WEST){
+                prevCart->m_west == cart;
+            }
+
             prev.second = x.second;
+            prev.first = x.first;
 
             if(cart == nullptr){
                 extendAtTail(x.first, 0);
             }
             
-
-
         }
+
+        return true;
     }
 }
 
