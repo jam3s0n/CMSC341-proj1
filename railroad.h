@@ -94,7 +94,8 @@ class Railroad{
         return true;
     }
 
-        bool unique(Station* head, int m_code){
+    //if the code does not exist it is unique
+    bool unique(Station* head, int m_code){
         Station* temp = head;
         while(temp != nullptr){
             if(temp->m_code == m_code){

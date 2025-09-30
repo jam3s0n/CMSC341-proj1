@@ -126,23 +126,16 @@ int Railroad::travel(list< pair<int,DIRECTION> > route){
         int count = 0;
 
             for(pair x: route){
-                cart = position(m_head, x.first);
-            if(cart == nullptr){
-                return false;
-            }
+                Station* cart = position(m_head, x.first);
+                
+                count =+ cart->m_passengers;
             
-            if(x.second == NORTH && cart->m_north != nullptr){
-                return false;
-            }else if(x.second == SOUTH && cart->m_south != nullptr){
-                return false;
-            }else if(x.second == EAST && cart->m_east != nullptr){
-                return false;
-            }else if(x.second == WEST && cart->m_west != nullptr){
-                return false;
-            }
+
+            
+
         }
 
-
+        return count;
     }
 }
 
@@ -157,17 +150,73 @@ bool Railroad::setNumPassengers(int code, int passengers){
 }
 
 bool Railroad::removeStation(int aCode){
-    
+    if(unique(m_head, aCode) || position(m_head, aCode) == nullptr){
+        return false;
+    }else{
+        //Head case
+        if(position(m_head,aCode) == m_head){
+            Station* temp = m_head;
+
+            m_head = m_head->m_next;
+
+            if(m_head != nullptr){
+                m_head->m_previous = nullptr;
+            }
+
+            //should I delete north south pointers too?
+            delete temp;
+            return true;
+
+            //Tail case
+        }else if(position(m_tail, aCode) == m_tail){
+            Station* temp = m_tail;
+
+            if(temp->m_previous != nullptr){
+                temp->m_previous->m_next = nullptr;
+            }
+
+            delete temp;
+            return true;
+
+            //Middle case
+        }else{
+            Station* temp = position(m_head, aCode);
+
+            temp->m_previous->m_next = temp->m_previous;
+
+            temp->m_next->m_previous = temp->m_previous;
+
+            delete temp;
+            return true;
+        }
+
+    }
 }
 
 void Railroad::clearAllRoutes(){
-    
+
+    Station* temp = m_head;
+    while(temp != nullptr){
+        temp->m_north = nullptr;
+        temp->m_south = nullptr;
+        temp->m_west = nullptr;
+        temp->m_east = nullptr;
+
+        temp = temp->m_next;
+    }
 }
 
 const Railroad & Railroad::operator=(const Railroad & rhs){
-    
+    if(this != &rhs){
+        delete m_head;
+        delete m_tail;
+
+        m_head = new Station* 
+
+    }
 }
 
 Railroad::Railroad(const Railroad & rhs){
-    
+        m_head = rhs.m_head;
+        m_tail = rhs.m_tail;
 }
