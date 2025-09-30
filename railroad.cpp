@@ -11,7 +11,18 @@ Railroad::~Railroad(){
 }
 
 void Railroad::clearNetwork(){
-    
+    Station* temp = m_head;
+
+    while(temp != nullptr){
+        temp->m_north = nullptr;
+        temp->m_south = nullptr;
+        temp->m_west = nullptr;
+        temp->m_east = nullptr;
+
+
+        temp = temp->m_next;
+        delete temp->m_previous;
+    }
 }
 
 bool Railroad::extendAtHead(int newCode, int passengers){
