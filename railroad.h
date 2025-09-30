@@ -144,5 +144,29 @@ class Railroad{
         return true;
     }
 
+    //Once the route is made check that the route is there
+    bool travelPossible(list< pair<int,DIRECTION> > route){
+        DIRECTION d = NONE;
+        Station* cart = nullptr;
+        for(pair x: route){
+            cart = position(m_head, x.first);
+            if(cart == nullptr){
+                return false;
+            }
+            
+            if(x.second == NORTH && cart->m_north == nullptr){
+                return false;
+            }else if(x.second == SOUTH && cart->m_south == nullptr){
+                return false;
+            }else if(x.second == EAST && cart->m_east == nullptr){
+                return false;
+            }else if(x.second == WEST && cart->m_west == nullptr){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 };

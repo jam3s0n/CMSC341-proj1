@@ -100,29 +100,47 @@ void Railroad::dump(){
 
 bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
     if(unique(m_head, route.front().first) || !possible(route)){
+        cout<<"here";
         return false;
     }else{
 
         pair<int, DIRECTION> prev = {NULL, NONE};
         for(pair x: route){
-            Station* cart = position(m_head, x.first);
 
-            Station* prevCart = position(m_head, prev.first);
-            if(prev.second == NORTH){
-                prevCart->m_north == cart;
-            }else if(prev.second == SOUTH){
-                prevCart->m_south == cart;
-            }else if(prev.second == EAST){
-                prevCart->m_east == cart;
-            }else if(prev.second == WEST){
-                prevCart->m_west == cart;
-            }
+            if(prev.first == NULL){
+                //do nothing
+                prev.second = x.second;
+                prev.first = x.first;
 
-            prev.second = x.second;
-            prev.first = x.first;
+                if(position(m_head, x.first) == nullptr){
+                    extendAtTail(x.first, 0);
+                    }
+            }else{
 
-            if(cart == nullptr){
-                extendAtTail(x.first, 0);
+
+                Station* cart = position(m_head, x.first);
+                if(cart == nullptr){
+                    extendAtTail(x.first, 0);
+                }
+
+                
+                Station* prevCart = position(m_head, prev.first);
+                cout<<"Prev Cart: "<<prevCart->m_code<<endl;
+                cout<<"Curr Cart: "<<cart->m_code<<endl;
+
+                if(prev.second == NORTH){
+                    prevCart->m_north == cart;
+                }else if(prev.second == SOUTH){
+                    prevCart->m_south == cart;
+                }else if(prev.second == EAST){
+                    prevCart->m_east == cart;
+                }else if(prev.second == WEST){
+                    prevCart->m_west == cart;
+                }
+
+                prev.second = x.second;
+                prev.first = x.first;
+
             }
             
         }
@@ -132,7 +150,7 @@ bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
 }
 
 int Railroad::travel(list< pair<int,DIRECTION> > route){
-    if(!possible(route)){
+    if(!travelPossible(route)){
         return -1;
     }else{
         int count = 0;
@@ -145,7 +163,7 @@ int Railroad::travel(list< pair<int,DIRECTION> > route){
 
             
 
-        }
+            }
 
         return count;
     }
@@ -185,6 +203,8 @@ bool Railroad::removeStation(int aCode){
 
             if(temp->m_previous != nullptr){
                 temp->m_previous->m_next = nullptr;
+
+                m_tail = temp->m_previous;
             }
 
             delete temp;
@@ -194,7 +214,7 @@ bool Railroad::removeStation(int aCode){
         }else{
             Station* temp = position(m_head, aCode);
 
-            temp->m_previous->m_next = temp->m_previous;
+            temp->m_previous->m_next = temp->m_next;
 
             temp->m_next->m_previous = temp->m_previous;
 
@@ -219,7 +239,18 @@ void Railroad::clearAllRoutes(){
 }
 
 const Railroad & Railroad::operator=(const Railroad & rhs){
-    Railroad(rhs);
+    
+    if(this != &rhs){
+
+            Station* temp = rhs.m_head;
+
+            while(temp != nullptr){
+                extendAtTail(temp->m_code, temp->m_passengers);
+                temp = temp->m_next;
+            }
+    }
+
+
     return *this;
 }
 

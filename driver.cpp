@@ -20,6 +20,8 @@ int main(){
     aRoute.push_back(pair<int,DIRECTION>(8,NONE));
     aNetwork.makeRoute(aRoute);
     cout << "Total travellers: " << aNetwork.travel(aRoute) << endl;
+
+    
     cout << "\nDump of the list:\n\n";
     aNetwork.dump();
     cout << "\n\nRemove node 5.\n\n";
