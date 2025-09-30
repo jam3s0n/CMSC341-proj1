@@ -120,7 +120,30 @@ bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
 }
 
 int Railroad::travel(list< pair<int,DIRECTION> > route){
-    
+    if(!possible(route)){
+        return -1;
+    }else{
+        int count = 0;
+
+            for(pair x: route){
+                cart = position(m_head, x.first);
+            if(cart == nullptr){
+                return false;
+            }
+            
+            if(x.second == NORTH && cart->m_north != nullptr){
+                return false;
+            }else if(x.second == SOUTH && cart->m_south != nullptr){
+                return false;
+            }else if(x.second == EAST && cart->m_east != nullptr){
+                return false;
+            }else if(x.second == WEST && cart->m_west != nullptr){
+                return false;
+            }
+        }
+
+
+    }
 }
 
 bool Railroad::setNumPassengers(int code, int passengers){

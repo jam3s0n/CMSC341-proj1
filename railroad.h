@@ -125,6 +125,10 @@ class Railroad{
         Station* cart = nullptr;
         for(pair x: route){
             cart = position(m_head, x.first);
+            if(cart == nullptr){
+                return false;
+            }
+            
             if(x.second == NORTH && cart->m_north != nullptr){
                 return false;
             }else if(x.second == SOUTH && cart->m_south != nullptr){
