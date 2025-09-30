@@ -47,6 +47,7 @@ bool Railroad::extendAtTail(int newCode, int passengers){
 
     if(m_tail == nullptr){
         m_tail = new Station(newCode,passengers);
+        m_head = m_tail;
     }
 
     if(unique(m_head, cart)){
@@ -214,10 +215,13 @@ const Railroad & Railroad::operator=(const Railroad & rhs){
 Railroad::Railroad(const Railroad & rhs){
         if(this != &rhs){
             clearNetwork();
-            
 
-            m_head = new Station* ;
+            Station* temp = rhs.m_head;
 
+            while(temp != nullptr){
+                extendAtTail(temp->m_code, temp->m_passengers);
+                temp = temp->m_next;
+            }
     }
 
 }
