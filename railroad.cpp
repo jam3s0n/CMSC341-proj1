@@ -207,16 +207,17 @@ void Railroad::clearAllRoutes(){
 }
 
 const Railroad & Railroad::operator=(const Railroad & rhs){
-    if(this != &rhs){
-        delete m_head;
-        delete m_tail;
-
-        m_head = new Station* 
-
-    }
+    Railroad(rhs);
+    return *this;
 }
 
 Railroad::Railroad(const Railroad & rhs){
-        m_head = rhs.m_head;
-        m_tail = rhs.m_tail;
+        if(this != &rhs){
+            clearNetwork();
+            
+
+            m_head = new Station* ;
+
+    }
+
 }
