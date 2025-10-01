@@ -14,15 +14,13 @@ void Railroad::clearNetwork(){
     Station* temp = m_head;
 
     while(temp != nullptr){
-        temp->m_north = nullptr;
-        temp->m_south = nullptr;
-        temp->m_west = nullptr;
-        temp->m_east = nullptr;
-
 
         temp = temp->m_next;
         delete temp->m_previous;
     }
+
+    m_head = nullptr;
+    m_tail = nullptr;
 }
 
 bool Railroad::extendAtHead(int newCode, int passengers){
@@ -104,10 +102,10 @@ bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
         return false;
     }else{
 
-        pair<int, DIRECTION> prev = {NULL, NONE};
+        pair<int, DIRECTION> prev = {-1, NONE};
         for(pair x: route){
 
-            if(prev.first == NULL){
+            if(prev.first == -1){
                 //do nothing
                 prev.second = x.second;
                 prev.first = x.first;
@@ -125,17 +123,15 @@ bool Railroad::makeRoute(list< pair<int,DIRECTION> > route){
 
                 
                 Station* prevCart = position(m_head, prev.first);
-                cout<<"Prev Cart: "<<prevCart->m_code<<endl;
-                cout<<"Curr Cart: "<<cart->m_code<<endl;
 
                 if(prev.second == NORTH){
-                    prevCart->m_north == cart;
+                    prevCart->m_north = cart;
                 }else if(prev.second == SOUTH){
-                    prevCart->m_south == cart;
+                    prevCart->m_south = cart;
                 }else if(prev.second == EAST){
-                    prevCart->m_east == cart;
+                    prevCart->m_east = cart;
                 }else if(prev.second == WEST){
-                    prevCart->m_west == cart;
+                    prevCart->m_west = cart;
                 }
 
                 prev.second = x.second;
@@ -158,7 +154,7 @@ int Railroad::travel(list< pair<int,DIRECTION> > route){
             for(pair x: route){
                 Station* cart = position(m_head, x.first);
                 
-                count =+ cart->m_passengers;
+                count += cart->m_passengers;
             
 
             
@@ -193,7 +189,6 @@ bool Railroad::removeStation(int aCode){
                 m_head->m_previous = nullptr;
             }
 
-            //should I delete north south pointers too?
             delete temp;
             return true;
 
@@ -209,17 +204,19 @@ bool Railroad::removeStation(int aCode){
 
             delete temp;
             return true;
-
+        
             //Middle case
         }else{
             Station* temp = position(m_head, aCode);
 
-            temp->m_previous->m_next = temp->m_next;
+            if(temp != nullptr){
+                temp->m_previous->m_next = temp->m_next;
 
-            temp->m_next->m_previous = temp->m_previous;
-
-            delete temp;
-            return true;
+                temp->m_next->m_previous = temp->m_previous;
+            }
+                delete temp;
+                return true;
+            
         }
 
     }
