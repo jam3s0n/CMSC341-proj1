@@ -179,9 +179,42 @@ bool Railroad::removeStation(int aCode){
     if(unique(m_head, aCode) || position(m_head, aCode) == nullptr){
         return false;
     }else{
+
+        //get the station given the code
+        Station* cart = position(m_head, aCode);
+
+        Station* temp = m_head;
+        while(temp != nullptr){
+
+             if(temp->m_north == cart){
+                temp->m_north = nullptr;
+
+            }else if(temp->m_south = cart){
+                temp->m_south = nullptr;
+
+            }else if(temp->m_east = cart){
+                temp->m_east = nullptr;
+
+            }else if(temp->m_west = cart){
+                temp->m_west = nullptr;
+            }           
+
+
+
+            temp = temp->m_next;
+        }
+
+
+
         //Head case
         if(position(m_head,aCode) == m_head){
             Station* temp = m_head;
+
+            //delete the pointers
+            m_head->m_north = nullptr;
+            m_head->m_south = nullptr;
+            m_head->m_east = nullptr;
+            m_head->m_west = nullptr;
 
             m_head = m_head->m_next;
 
@@ -190,11 +223,20 @@ bool Railroad::removeStation(int aCode){
             }
 
             delete temp;
+            temp = nullptr;
             return true;
 
             //Tail case
         }else if(position(m_tail, aCode) == m_tail){
             Station* temp = m_tail;
+
+             //delete the pointers
+            m_tail->m_north = nullptr;
+            m_tail->m_south = nullptr;
+            m_tail->m_east = nullptr;
+            m_tail->m_west = nullptr;
+
+
 
             if(temp->m_previous != nullptr){
                 temp->m_previous->m_next = nullptr;
@@ -203,11 +245,19 @@ bool Railroad::removeStation(int aCode){
             }
 
             delete temp;
+            temp = nullptr;
             return true;
         
             //Middle case
         }else{
             Station* temp = position(m_head, aCode);
+
+            //delete the pointers
+            temp->m_north = nullptr;
+            temp->m_south = nullptr;
+            temp->m_east = nullptr;
+            temp->m_west = nullptr;
+
 
             if(temp != nullptr){
                 temp->m_previous->m_next = temp->m_next;
@@ -215,6 +265,7 @@ bool Railroad::removeStation(int aCode){
                 temp->m_next->m_previous = temp->m_previous;
             }
                 delete temp;
+                temp = nullptr;
                 return true;
             
         }
