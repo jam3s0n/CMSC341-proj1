@@ -7,6 +7,7 @@ class Tester{ // Tester class to implement test functions
     /**************************************
     * Test function declarations go here! *
     **************************************/
+
 };
 
 int main(){
